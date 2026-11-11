@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style></style>
+  </head>
+
+  <body>
+    <div class="app-wrapper">
+      <header class="app-header">
+        <div class="brand-title">
+          <i class="fa-solid fa-cloud-bolt"></i>
+          <span>Atmosphere</span>
+        </div>
+
+        <div class="search-container">
+          <form class="search-form" id="search-form">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search city..."
+            />
+            <button type="submit" class="search-btn" aria-label="Search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </form>
+
+          <!-- Temperature Unit Toggle Toggle -->
+          <div class="unit-toggle" id="unit-toggle">
+            <button class="unit-btn active" id="unit-c">°C</button>
+            <button class="unit-btn" id="unit-f">°F</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="weather-grid">
+        <div class="main-section">
+          <section class="glass-card hero-card">
+            <div class="hero-header">
+              <div class="location-info">
+                <h2>London</h2>
+                <p>United Kingdom • Thursday, Oct 24</p>
+              </div>
+              <div class="weather-status-badge">
+                <i class="fa-solid fa-cloud-showers-heavy"></i>
+                <span>Light Rain</span>
+              </div>
+            </div>
+
+            <div class="hero-body">
+              <div class="temperature-display">
+                <span class="temp-number">18</span>
+                <span class="temp-unit">°C</span>
+              </div>
+              <div class="hero-icon-wrapper">
+                <i class="fa-solid fa-cloud-sun-rain"></i>
+              </div>
+            </div>
+
+            <div class="hero-footer">
+              <span>High: 20°C</span>
+              <span>Low: 12°C</span>
+              <span>Feels like: 17°C</span>
+            </div>
+          </section>
+
+          <section class="glass-card hourly-section">
+            <h3 class="section-title">
+              <i class="fa-regular fa-clock"></i> Hourly Forecast
+            </h3>
+            <div class="hourly-track">
+              <div class="hourly-item active">
+                <span class="hourly-time">Now</span>
+                <i class="fa-solid fa-cloud-sun-rain hourly-icon"></i>
+                <span class="hourly-temp">18°</span>
+              </div>
+              <div class="hourly-item">
+                <span class="hourly-time">12 PM</span>
+                <i class="fa-solid fa-sun hourly-icon"></i>
+                <span class="hourly-temp">20°</span>
+              </div>
+              <div class="hourly-item">
+                <span class="hourly-time">1 PM</span>
+                <i class="fa-solid fa-cloud-sun hourly-icon"></i>
+                <span class="hourly-temp">19°</span>
+              </div>
+              <div class="hourly-item">
+                <span class="hourly-time">2 PM</span>
+                <i class="fa-solid fa-cloud hourly-icon"></i>
+                <span class="hourly-temp">18°</span>
+              </div>
+              <div class="hourly-item">
+                <span class="hourly-time">3 PM</span>
+                <i class="fa-solid fa-cloud-rain hourly-icon"></i>
+                <span class="hourly-temp">16°</span>
+              </div>
+              <div class="hourly-item">
+                <span class="hourly-time">4 PM</span>
+                <i class="fa-solid fa-cloud-showers-heavy hourly-icon"></i>
+                <span class="hourly-temp">15°</span>
+              </div>
+              <div class="hourly-item">
+                <span class="hourly-time">5 PM</span>
+                <i class="fa-solid fa-cloud-moon hourly-icon"></i>
+                <span class="hourly-temp">14°</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="metrics-grid">
+            <div class="glass-card metric-card">
+              <div class="metric-header">
+                <i class="fa-solid fa-droplet"></i>
+                <span>Humidity</span>
+              </div>
+              <div class="metric-value">78%</div>
+              <div class="metric-footer">The dew point is 13°C right now</div>
+            </div>
+
+            <div class="glass-card metric-card">
+              <div class="metric-header">
+                <i class="fa-solid fa-wind"></i>
+                <span>Wind Speed</span>
+              </div>
+              <div class="metric-value">
+                14 <span style="font-size: 1rem; font-weight: 400">km/h</span>
+              </div>
+              <div class="metric-footer">NW • Gusts up to 22 km/h</div>
+            </div>
+
+            <div class="glass-card metric-card">
+              <div class="metric-header">
+                <i class="fa-solid fa-sun"></i>
+                <span>UV Index</span>
+              </div>
+              <div class="metric-value">
+                3 <span style="font-size: 1rem; font-weight: 400">Mod</span>
+              </div>
+              <div class="metric-footer">Moderate protection needed</div>
+            </div>
+
+            <div class="glass-card metric-card">
+              <div class="metric-header">
+                <i class="fa-solid fa-gauge"></i>
+                <span>Pressure</span>
+              </div>
+              <div class="metric-value">
+                1013 <span style="font-size: 1rem; font-weight: 400">hPa</span>
+              </div>
+              <div class="metric-footer">Steady over last 3 hours</div>
+            </div>
+
+            <div class="glass-card metric-card">
+              <div class="metric-header">
+                <i class="fa-solid fa-eye"></i>
+                <span>Visibility</span>
+              </div>
+              <div class="metric-value">
+                10 <span style="font-size: 1rem; font-weight: 400">km</span>
+              </div>
+              <div class="metric-footer">Clear visibility conditions</div>
+            </div>
+
+            <div class="glass-card metric-card">
+              <div class="metric-header">
+                <i class="fa-solid fa-smog"></i>
+                <span>Air Quality</span>
+              </div>
+              <div class="metric-value">
+                42 <span style="font-size: 1rem; font-weight: 400">Good</span>
+              </div>
+              <div class="metric-footer">AQI index is low</div>
+            </div>
+          </section>
+        </div>
+
+        <!-- RIGHT SIDEBAR SECTION (7-DAY FORECAST - FLEXBOX LIST INSIDE GRID AREA) -->
+        <aside class="glass-card sidebar-section">
+          <h3 class="section-title">
+            <i class="fa-regular fa-calendar-days"></i> 7-Day Forecast
+          </h3>
+
+          <div class="daily-list">
+            <div class="daily-item">
+              <span class="daily-day">Today</span>
+              <div class="daily-condition">
+                <i class="fa-solid fa-cloud-showers-heavy"></i>
+                <span>Rain</span>
+              </div>
+              <div class="daily-temps">
+                <span class="daily-max">20°</span>
+                <span class="daily-min">12°</span>
+              </div>
+            </div>
+
+            <div class="daily-item">
+              <span class="daily-day">Fri</span>
+              <div class="daily-condition">
+                <i class="fa-solid fa-sun"></i>
+                <span>Sunny</span>
+              </div>
+              <div class="daily-temps">
+                <span class="daily-max">22°</span>
+                <span class="daily-min">14°</span>
+              </div>
+            </div>
+
+            <div class="daily-item">
+              <span class="daily-day">Sat</span>
+              <div class="daily-condition">
+                <i class="fa-solid fa-cloud-sun"></i>
+                <span>Partly Cloudy</span>
+              </div>
+              <div class="daily-temps">
+                <span class="daily-max">19°</span>
+                <span class="daily-min">11°</span>
+              </div>
+            </div>
+
+            <div class="daily-item">
+              <span class="daily-day">Sun</span>
+              <div class="daily-condition">
+                <i class="fa-solid fa-cloud"></i>
+                <span>Cloudy</span>
+              </div>
+              <div class="daily-temps">
+                <span class="daily-max">17°</span>
+                <span class="daily-min">10°</span>
+              </div>
+            </div>
+
+            <div class="daily-item">
+              <span class="daily-day">Mon</span>
+              <div class="daily-condition">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Thunderstorm</span>
+              </div>
+              <div class="daily-temps">
+                <span class="daily-max">15°</span>
+                <span class="daily-min">9°</span>
+              </div>
+            </div>
+
+            <div class="daily-item">
+              <span class="daily-day">Tue</span>
+              <div class="daily-condition">
+                <i class="fa-solid fa-cloud-rain"></i>
+                <span>Light Rain</span>
+              </div>
+              <div class="daily-temps">
+                <span class="daily-max">16°</span>
+                <span class="daily-min">10°</span>
+              </div>
+            </div>
+
+            <div class="daily-item">
+              <span class="daily-day">Wed</span>
+              <div class="daily-condition">
+                <i class="fa-solid fa-sun"></i>
+                <span>Clear</span>
+              </div>
+              <div class="daily-temps">
+                <span class="daily-max">21°</span>
+                <span class="daily-min">13°</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

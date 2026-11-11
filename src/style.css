@@ -1,0 +1,465 @@
+/* ==========================================================================
+           1. CSS VARIABLES & THEME SETUP
+           ========================================================================== */
+:root {
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-bg-hover: rgba(51, 65, 85, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent-blue: #38bdf8;
+  --accent-purple: #818cf8;
+  --accent-gradient: linear-gradient(135deg, #38bdf8, #818cf8);
+
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Card Utility */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+}
+
+/* ==========================================================================
+           2. MAIN CONTAINER & GRID SYSTEM
+           ========================================================================== */
+.app-wrapper {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* MAIN APP GRID LAYOUT */
+/* CSS Grid structure with responsive auto-fit/columns */
+.weather-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile-first default: single column */
+  gap: 1.5rem;
+}
+
+/* Tablet & Desktop Layout Breakdown */
+@media (min-width: 1024px) {
+  .weather-grid {
+    grid-template-columns: 1.2fr 1fr; /* Split into main section & forecast sidebar */
+    grid-template-areas: "main sidebar";
+  }
+
+  .main-section {
+    grid-area: main;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .sidebar-section {
+    grid-area: sidebar;
+  }
+}
+
+/* ==========================================================================
+           3. HEADER & SEARCH BAR (FLEXBOX)
+           ========================================================================== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.brand-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-grow: 1;
+  max-width: 500px;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid var(--glass-border);
+  transition: var(--transition-fast);
+}
+
+.search-form:focus-within {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: var(--transition-fast);
+}
+
+.search-btn:hover {
+  color: var(--accent-blue);
+}
+
+/* Toggle Button for Units (Flexbox) */
+.unit-toggle {
+  display: flex;
+  align-items: center;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid var(--glass-border);
+  border-radius: 9999px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.unit-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.unit-btn.active {
+  background: var(--accent-gradient);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.3);
+}
+
+/* ==========================================================================
+           4. CURRENT WEATHER HERO CARD (FLEXBOX)
+           ========================================================================== */
+.hero-card {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  min-height: 280px;
+}
+
+.hero-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.location-info h2 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.location-info p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.weather-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.hero-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.temperature-display {
+  display: flex;
+  align-items: baseline;
+}
+
+.temp-number {
+  font-size: 5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.temp-unit {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--accent-blue);
+}
+
+.hero-icon-wrapper {
+  font-size: 4.5rem;
+  color: var(--accent-blue);
+  filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.4));
+}
+
+.hero-footer {
+  display: flex;
+  gap: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--glass-border);
+  margin-top: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+           5. HOURLY FORECAST SCROLL TRACK (FLEXBOX)
+           ========================================================================== */
+.hourly-section {
+  padding: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hourly-track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--glass-border) transparent;
+}
+
+.hourly-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.hourly-track::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 10px;
+}
+
+.hourly-item {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+  transition: var(--transition-fast);
+  min-width: 80px;
+}
+
+.hourly-item:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border);
+  transform: translateY(-2px);
+}
+
+.hourly-item.active {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: var(--accent-blue);
+}
+
+.hourly-time {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.hourly-icon {
+  font-size: 1.5rem;
+  color: var(--accent-blue);
+}
+
+.hourly-temp {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* ==========================================================================
+           6. DETAILED METRICS GRID (AUTO-FILL RESPONSIVE GRID)
+           ========================================================================== */
+/*
+          CRITICAL ODIN/GRID LEARNING POINT:
+          Using repeat(auto-fill, minmax(150px, 1fr)) creates a responsive grid
+          that automatically calculates column count based on available space!
+        */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.metric-card {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: var(--transition-fast);
+}
+
+.metric-card:hover {
+  background: var(--glass-bg-hover);
+  transform: translateY(-2px);
+}
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.metric-footer {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+           7. 7-DAY DAILY FORECAST SIDEBAR (FLEXBOX IN GRID)
+           ========================================================================== */
+.sidebar-section {
+  padding: 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.daily-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.daily-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.02);
+  transition: var(--transition-fast);
+}
+
+.daily-item:hover {
+  background: var(--glass-bg-hover);
+}
+
+.daily-day {
+  font-weight: 600;
+  width: 80px;
+}
+
+.daily-condition {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  flex-grow: 1;
+}
+
+.daily-condition i {
+  color: var(--accent-blue);
+  width: 20px;
+  text-align: center;
+}
+
+.daily-temps {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.daily-max {
+  font-weight: 600;
+}
+
+.daily-min {
+  color: var(--text-muted);
+}
