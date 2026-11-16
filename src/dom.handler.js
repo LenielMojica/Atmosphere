@@ -8,7 +8,6 @@ const days = [
   daysOfWeek[new Date().getDay() + 4],
   daysOfWeek[new Date().getDay() + 5],
   daysOfWeek[new Date().getDay() + 6],
-  daysOfWeek[new Date().getDay() + 7],
 ];
 for (let i = 0; i < days.length; i++) {
   console.log(days[i]);
@@ -50,13 +49,12 @@ const renderHourlyWeather = (data) => {
           Number(hour.datetime.replaceAll(":", "") >= Number(currentTime)),
         );
   console.log(hours);
+  let counter = 0;
   data.days[0].hours.forEach((element, i) => {
     if (Number(element.datetime.replaceAll(":", "")) < Number(currentTime)) {
       return;
     }
-    if (i >= 7) {
-      return;
-    }
+    if (counter >= 7) return;
     const hourlyContainer = document.createElement("div");
     const hourlyTime = document.createElement("span");
     const hourlyTemp = document.createElement("span");
@@ -69,6 +67,7 @@ const renderHourlyWeather = (data) => {
     hourlyTime.classList.add("hourly-time");
 
     hourlyCard.appendChild(hourlyContainer);
+    counter++;
   });
 };
 
@@ -113,6 +112,7 @@ const renderDailyWeather = (data) => {
   const daysContainer = document.querySelector(".daily-list");
   daysContainer.innerHTML = "";
   data.days.forEach((day, i) => {
+    if (i >= 7) return;
     const dailyItem = document.createElement("div");
     dailyItem.classList.add("daily-item");
     const dailyDay = document.createElement("span");
