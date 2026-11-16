@@ -42,18 +42,19 @@ const renderHourlyWeather = (data) => {
 
   hourlyCard.innerHTML = "";
   const hours =
-    data.days[0].hours.filter((hour) =>
-      Number(hour.datetime.replaceAll(":", "") >= Number(currentTime)),
-    ) ||
-    data.days[0].hours.filter((hour) =>
-      Number(hour.datetime.replaceAll(":", "") >= Number(currentTime)),
-    );
+    data.days[0].hours.length > 4
+      ? data.days[0].hours.filter((hour) =>
+          Number(hour.datetime.replaceAll(":", "") >= Number(currentTime)),
+        )
+      : data.days[0].hours.filter((hour) =>
+          Number(hour.datetime.replaceAll(":", "") >= Number(currentTime)),
+        );
   console.log(hours);
   data.days[0].hours.forEach((element, i) => {
     if (Number(element.datetime.replaceAll(":", "")) < Number(currentTime)) {
       return;
     }
-    if (i == 6) {
+    if (i >= 7) {
       return;
     }
     const hourlyContainer = document.createElement("div");
