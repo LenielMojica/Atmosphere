@@ -13,16 +13,15 @@ const days = [
 for (let i = 0; i < days.length; i++) {
   console.log(days[i]);
 }
-export const renderUI = (currentData, hourlyData) => {
+export const renderUI = (currentData) => {
   renderCurrentWeather(currentData);
-  renderHourlyWeather(hourlyData);
+  renderHourlyWeather(currentData);
   renderMetrics(currentData);
   renderDailyWeather(currentData);
   console.log(currentData);
 };
 
 const renderCurrentWeather = (data) => {
-  if (!data) return;
   const date = document.getElementById("date");
   const temp = document.querySelector(".temp-number");
   const status = document.getElementById("status-badge");
@@ -42,9 +41,13 @@ const renderHourlyWeather = (data) => {
   const currentTime = format(new Date(), "HHmmss");
 
   hourlyCard.innerHTML = "";
-  const hours = data.days[0].hours.filter((hour) =>
-    Number(hour.datetime.replaceAll(":", "") >= Number(currentTime)),
-  );
+  const hours =
+    data.days[0].hours.filter((hour) =>
+      Number(hour.datetime.replaceAll(":", "") >= Number(currentTime)),
+    ) ||
+    data.days[0].hours.filter((hour) =>
+      Number(hour.datetime.replaceAll(":", "") >= Number(currentTime)),
+    );
   console.log(hours);
   data.days[0].hours.forEach((element, i) => {
     if (Number(element.datetime.replaceAll(":", "")) < Number(currentTime)) {

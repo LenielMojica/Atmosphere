@@ -5,7 +5,7 @@ const otherParams = "";
 export const fetchCurrent = async (location) => {
   try {
     const data = await fetch(
-      `${BASE_URL}/${location}?unitGroup=metric&include=hours,current&elements=temp,humidity,windspeed,conditions,pressure,visibility,tempmin,tempmax`,
+      `${BASE_URL}/${location}?unitGroup=metric&include=hours,current&elements=temp,datetime,humidity,windspeed,conditions,pressure,visibility,tempmin,tempmax`,
     );
     const parsed = await data.json();
     console.log(parsed.status);
@@ -15,12 +15,4 @@ export const fetchCurrent = async (location) => {
   } finally {
     console.log("Fetched");
   }
-};
-
-export const fetchHourly = async (location) => {
-  const data = await fetch(
-    `${BASE_URL}/${location}/${format(new Date(), "yyyy-MM-dd")}?unitGroup=metric&include=days,hours&elements=datetime,tempmax,tempmin,temp,humidity,conditions`,
-  );
-  const parsed = await data.json();
-  return parsed;
 };
