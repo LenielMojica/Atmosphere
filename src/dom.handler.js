@@ -22,6 +22,7 @@ export const renderUI = (currentData) => {
 };
 
 const renderCurrentWeather = (data) => {
+  const mainSection = document.querySelector(".main-section");
   const date = document.getElementById("date");
   const temp = document.querySelector(".temp-number");
   const status = document.getElementById("status-badge");
