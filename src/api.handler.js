@@ -5,7 +5,7 @@ const otherParams = "";
 export const fetchCurrent = async (location) => {
   try {
     const data = await fetch(
-      `${BASE_URL}/${location}?unitGroup=metric&include=hours,current&elements=temp,datetime,humidity,windspeed,conditions,pressure,visibility,tempmin,tempmax`,
+      `${BASE_URL}/${location}?unitGroup=metric&iconSet=icons2&include=hours,current&elements=temp,datetime,humidity,uvindex,feelslike,,%2Baqius,windspeed,conditions,pressure,visibility,tempmin,tempmax,icon`,
     );
     const parsed = await data.json();
     console.log(parsed.status);

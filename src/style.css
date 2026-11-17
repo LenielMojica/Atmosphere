@@ -266,6 +266,16 @@ body {
   color: var(--accent-blue);
   filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.4));
 }
+.current-icon {
+  width: 80px;
+  height: 80px;
+  border: none;
+}
+.daily-icon {
+  width: 30px;
+  height: 30px;
+  border: none;
+}
 
 .hero-footer {
   display: flex;
@@ -438,7 +448,7 @@ body {
 .daily-condition {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 2rem;
   color: var(--text-secondary);
   font-size: 0.9rem;
   flex-grow: 1;
