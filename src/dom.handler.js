@@ -1,23 +1,20 @@
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { getWeatherIcon } from "./icon.js";
 const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const days = [
-  daysOfWeek[new Date().getDay()],
-  daysOfWeek[new Date().getDay() + 1],
-  daysOfWeek[new Date().getDay() + 2],
-  daysOfWeek[new Date().getDay() + 3],
-  daysOfWeek[new Date().getDay() + 4],
-  daysOfWeek[new Date().getDay() + 5],
-  daysOfWeek[new Date().getDay() + 6],
-];
+const days = [];
+for (let day of daysOfWeek) {
+  days.push(day);
+}
+console.log(days);
 for (let i = 0; i < days.length; i++) {
-  console.log(days[i]);
+  console.log(i, ":", days[i]);
 }
 export const renderUI = (currentData) => {
   renderCurrentWeather(currentData);
   renderHourlyWeather(currentData);
   renderMetrics(currentData);
   renderDailyWeather(currentData);
+
   console.log(currentData);
 };
 
@@ -74,13 +71,21 @@ const renderCurrentWeather = (data) => {
   tempUnit.classList.add("temp-unit");
   tempNumber.classList.add("temp-number");
 
-  city.innerHTML = data.address.charAt(0).toUpperCase() + data.address.slice(1);
+  city.innerHTML = data.city
+    ? data.city
+    : data.address.charAt(0).toUpperCase() + data.address.slice(1);
   date.innerHTML = format(new Date(), "EEEE, d MMM");
   tempNumber.innerHTML = Math.round(data.currentConditions.temp);
-  tempUnit.innerHTML = "°C";
+  tempUnit.innerHTML = data.unit == "metric" ? "°C" : "°F";
   statusBadge.innerHTML = data.currentConditions.conditions;
-  minTemp.innerHTML = "Low: " + Math.round(data.days[0].tempmin) + "°C";
-  maxTemp.innerHTML = "High: " + Math.round(data.days[0].tempmax) + "°C";
+  minTemp.innerHTML =
+    "Low: " +
+    Math.round(data.days[0].tempmin) +
+    (data.unit == "metric" ? "°C" : "°F");
+  maxTemp.innerHTML =
+    "High: " +
+    Math.round(data.days[0].tempmax) +
+    (data.unit == "metric" ? "°C" : "°F");
   const icon = document.createElement("img");
   icon.classList.add("current-icon");
   iconWrapper.appendChild(icon);
@@ -140,10 +145,10 @@ const renderMetrics = (data) => {
   );
   const unitMap = {
     humidity: " %",
-    windspeed: " km/h",
+    windspeed: data.unit == "metric" ? " kmh" : "mph",
     pressure: " hPa",
-    visibility: " km",
-    feelslike: "°C",
+    visibility: data.unit == "metric" ? " km" : "mi",
+    feelslike: data.unit == "metric" ? "°C" : "°F",
   };
   const iconMap = {
     humidity: "fa-droplet",
@@ -274,6 +279,7 @@ const renderMetrics = (data) => {
 const renderDailyWeather = (data) => {
   const daysContainer = document.querySelector(".daily-list");
   daysContainer.innerHTML = "";
+
   data.days.forEach((day, i) => {
     if (i >= 7) return;
 
@@ -303,9 +309,10 @@ const renderDailyWeather = (data) => {
 
     dailyItem.appendChild(dailyTemps);
     daysContainer.appendChild(dailyItem);
-    dailyDay.innerHTML = i == 0 ? "Today" : days[i] == undefined ? "" : days[i];
-    dailyMax.innerHTML = Math.round(day.tempmax) + "°C";
-    dailyMin.innerHTML = Math.round(day.tempmin) + "°C";
+    dailyDay.innerHTML =
+      i == 0 ? "Today" : format(parseISO(data.days[i].datetime), "EEE");
+    dailyMax.innerHTML = Math.round(day.tempmax) + "°";
+    dailyMin.innerHTML = Math.round(day.tempmin) + "°";
     condition.innerHTML = day.conditions;
   });
 };
