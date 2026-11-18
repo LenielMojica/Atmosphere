@@ -89,23 +89,22 @@ const renderCurrentWeather = (data) => {
 };
 const renderHourlyWeather = (data) => {
   const hourlyCard = document.querySelector(".hourly-track");
-  const currentTime = format(new Date(), "HHmmss");
+  const currentTime = format(new Date(), "HH'0000'");
 
   hourlyCard.innerHTML = "";
-  const hours =
-    data.days[0].hours.length > 4
-      ? data.days[0].hours.filter((hour) =>
-          Number(hour.datetime.replaceAll(":", "") >= Number(currentTime)),
-        )
-      : data.days[0].hours.filter((hour) =>
-          Number(hour.datetime.replaceAll(":", "") >= Number(currentTime)),
-        );
-  console.log(hours);
+
   let counter = 0;
-  data.days[0].hours.forEach((element, i) => {
-    if (Number(element.datetime.replaceAll(":", "")) < Number(currentTime)) {
-      return;
-    }
+
+  const startHourIndex = data.days[0].hours.findIndex(
+    (item) => item.datetime.replaceAll(":", "") == currentTime,
+  );
+
+  const hours = [
+    ...data.days[0].hours.slice(startHourIndex),
+    ...data.days[1].hours,
+  ];
+
+  hours.forEach((element, i) => {
     if (counter >= 7) return;
     const hourlyContainer = document.createElement("div");
     const hourlyTime = document.createElement("span");

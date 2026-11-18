@@ -2,6 +2,9 @@ import "./style.css";
 import { fetchCurrent } from "./api.handler.js";
 import { renderUI } from "./dom.handler.js";
 const input = document.querySelector(".search-input");
+const title = document.getElementById("title");
+title.setAttribute("style", "cursor:pointer;");
+title.addEventListener("click", () => getCurrentLocationWeather());
 
 const getUserCoordinates = () => {
   return new Promise((resolve, reject) => {
