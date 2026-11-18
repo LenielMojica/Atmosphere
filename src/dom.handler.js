@@ -22,24 +22,68 @@ export const renderUI = (currentData) => {
 };
 
 const renderCurrentWeather = (data) => {
-  const mainSection = document.querySelector(".main-section");
-  const date = document.getElementById("date");
-  const temp = document.querySelector(".temp-number");
-  const status = document.getElementById("status-badge");
-  const mintemp = document.getElementById("mintemp");
-  const maxtemp = document.getElementById("maxtemp");
-  const icon = document.createElement("img");
-  const heroBody = document.querySelector(".hero-body");
-  icon.classList.add("current-icon");
+  const heroCard = document.querySelector(".hero-card");
+  heroCard.innerHTML = "";
+  //Header
+  //===============================================
+  const heroHeader = document.createElement("div");
+  heroHeader.classList.add("hero-header");
+  heroCard.appendChild(heroHeader);
+  const locationInfo = document.createElement("div");
+  heroHeader.appendChild(locationInfo);
+  const city = document.createElement("h2");
+  const date = document.createElement("p");
+  date.setAttribute("id", "date");
+  locationInfo.appendChild(city);
+  locationInfo.appendChild(date);
+  const statusContainer = document.createElement("div");
+  const statusBadge = document.createElement("span");
+  statusBadge.setAttribute("id", "status-badge");
+  statusContainer.classList.add("weather-status-badge");
+  statusContainer.appendChild(statusBadge);
+  heroHeader.appendChild(statusContainer);
+  //===============================================
+  // Body
+  const body = document.createElement("div");
+  body.classList.add("hero-body");
+  heroCard.appendChild(body);
+  const temperatureDisplay = document.createElement("div");
+  const tempNumber = document.createElement("span");
+  const tempUnit = document.createElement("span");
+  const iconWrapper = document.createElement("div");
+  body.appendChild(temperatureDisplay);
+  body.appendChild(iconWrapper);
+  temperatureDisplay.appendChild(tempNumber);
+  temperatureDisplay.appendChild(tempUnit);
+  temperatureDisplay.classList.add("temperature-display");
+  //===============================================
+  // Footer
+  const heroFooter = document.createElement("div");
+  heroFooter.classList.add("hero-footer");
 
-  const city = document.getElementById("city");
+  heroCard.appendChild(heroFooter);
+
+  const maxTemp = document.createElement("span");
+  const minTemp = document.createElement("span");
+  maxTemp.classList.add("max-temp");
+  minTemp.classList.add("min-temp");
+  heroFooter.appendChild(maxTemp);
+  heroFooter.appendChild(minTemp);
+  iconWrapper.classList.add("hero-icon-wrapper");
+
+  tempUnit.classList.add("temp-unit");
+  tempNumber.classList.add("temp-number");
+
   city.innerHTML = data.address.charAt(0).toUpperCase() + data.address.slice(1);
   date.innerHTML = format(new Date(), "EEEE, d MMM");
-  temp.innerHTML = Math.round(data.currentConditions.temp);
-  status.innerHTML = data.currentConditions.conditions;
-  mintemp.innerHTML = "Low: " + Math.round(data.days[0].tempmin) + "°C";
-  maxtemp.innerHTML = "High: " + Math.round(data.days[0].tempmax) + "°C";
-  heroBody.appendChild(icon);
+  tempNumber.innerHTML = Math.round(data.currentConditions.temp);
+  tempUnit.innerHTML = "°C";
+  statusBadge.innerHTML = data.currentConditions.conditions;
+  minTemp.innerHTML = "Low: " + Math.round(data.days[0].tempmin) + "°C";
+  maxTemp.innerHTML = "High: " + Math.round(data.days[0].tempmax) + "°C";
+  const icon = document.createElement("img");
+  icon.classList.add("current-icon");
+  iconWrapper.appendChild(icon);
 
   icon.src = getWeatherIcon(data.currentConditions.icon);
 };
