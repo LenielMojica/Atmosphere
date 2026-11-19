@@ -7,5 +7,8 @@ module.exports = merge(common, {
   devServer: {
     static: "./dist",
     watchFiles: ["./src/index.html"],
+    client: {
+      overlay: false,
+    },
   },
 });

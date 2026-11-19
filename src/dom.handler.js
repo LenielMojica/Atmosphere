@@ -5,17 +5,12 @@ const days = [];
 for (let day of daysOfWeek) {
   days.push(day);
 }
-console.log(days);
-for (let i = 0; i < days.length; i++) {
-  console.log(i, ":", days[i]);
-}
+
 export const renderUI = (currentData) => {
   renderCurrentWeather(currentData);
   renderHourlyWeather(currentData);
   renderMetrics(currentData);
   renderDailyWeather(currentData);
-
-  console.log(currentData);
 };
 
 const renderCurrentWeather = (data) => {
@@ -145,9 +140,9 @@ const renderMetrics = (data) => {
   );
   const unitMap = {
     humidity: " %",
-    windspeed: data.unit == "metric" ? " kmh" : "mph",
+    windspeed: data.unit == "metric" ? " km/h" : " mph",
     pressure: " hPa",
-    visibility: data.unit == "metric" ? " km" : "mi",
+    visibility: data.unit == "metric" ? " km" : " mi1",
     feelslike: data.unit == "metric" ? "°C" : "°F",
   };
   const iconMap = {

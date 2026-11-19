@@ -1,6 +1,7 @@
 import "./style.css";
 import { fetchCurrentMetric, fetchCurrentUS } from "./api.handler.js";
 import { renderUI } from "./dom.handler.js";
+import { showError } from "./error.handler.js";
 const BASE_URL_GEOLOCATION =
   "https://api.bigdatacloud.net/data/reverse-geocode-client?";
 const input = document.querySelector(".search-input");
@@ -9,7 +10,10 @@ const f = document.getElementById("unit-f");
 const c = document.getElementById("unit-c");
 
 title.setAttribute("style", "cursor:pointer;");
-title.addEventListener("click", () => getCurrentLocationWeather());
+title.addEventListener("click", () => {
+  getCurrentLocationWeather();
+  input.value = "";
+});
 
 const getUserCoordinates = () => {
   return new Promise((resolve, reject) => {
@@ -17,20 +21,22 @@ const getUserCoordinates = () => {
       reject(new Error("Your Browser does not support geolocation"));
       return;
     }
-    navigator.geolocation.getCurrentPosition((position) => {
-      (resolve({
-        lat: position.coords.latitude,
-        lon: position.coords.longitude,
-      }),
-        (error) => {
-          reject(error);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        resolve({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
         });
-    });
+      },
+      (error) => {
+        reject(error);
+      },
+    );
   });
 };
 
 const form = document.getElementById("search-form");
-const getCurrentLocationWeather = async () => {
+export const getCurrentLocationWeather = async () => {
   try {
     const { lat, lon } = await getUserCoordinates();
     const response = await fetch(
@@ -39,57 +45,47 @@ const getCurrentLocationWeather = async () => {
     const locationData = await response.json();
 
     const locationString = `${lat},${lon}`;
-    const weatherData = await fetchCurrentMetric(locationString);
-    const weatherDataUs = await fetchCurrentUS(locationString);
+    const weatherData = await getWeather(locationString);
     weatherData.city = locationData.city;
-    weatherDataUs.city = locationData.city;
-    weatherData.unit = "metric";
-    weatherDataUs.unit = "us";
-    if (c.classList.contains("active")) {
-      renderUI(weatherData);
-    } else {
-      renderUI(weatherDataUs);
-    }
+    renderUI(weatherData);
   } catch (error) {
-    const fallbackData = await fetchCurrentMetric("Santo Domingo");
-    const fallbackDataUs = await fetchCurrentUS("Santo Domingo");
-
-    if (c.classList.contains("active")) {
-      renderUI(fallbackData);
-    } else {
-      renderUI(fallbackDataUs);
-    }
+    renderUI(await getWeather("Santo Domingo"));
   }
 };
 getCurrentLocationWeather();
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  toggleUnits();
+  const query = input.value.trim();
+  if (!query) return;
+  renderUI(await getWeather(query));
 });
-async function toggleUnits() {
-  const dataCurrent = await fetchCurrentMetric(input.value);
-  const dataCurrentUs = await fetchCurrentUS(input.value);
-  if (c.classList.contains("active")) {
-    renderUI(dataCurrent);
-  } else {
-    renderUI(dataCurrentUs);
+const fetchByActiveUnit = async (location) => {
+  const isMetric = c.classList.contains("active");
+  const data = isMetric
+    ? await fetchCurrentMetric(location)
+    : await fetchCurrentUS(location);
+
+  data.unit = isMetric ? "metric" : "us";
+  return data;
+};
+const getWeather = async (city) => {
+  try {
+    return await fetchByActiveUnit(city);
+  } catch (error) {
+    showError(error);
+
+    return await fetchByActiveUnit("Santo Domingo");
   }
-}
-f.addEventListener("click", () => {
-  c.classList.remove("active");
-  f.classList.add("active");
-  if (!input.value) {
-    getCurrentLocationWeather();
+};
+const handleUnitChange = async (selectedUnit, otherUnit) => {
+  otherUnit.classList.remove("active");
+  selectedUnit.classList.add("active");
+
+  if (!input.value.trim()) {
+    await getCurrentLocationWeather();
   } else {
-    toggleUnits();
+    renderUI(await getWeather(input.value.trim()));
   }
-});
-c.addEventListener("click", () => {
-  f.classList.remove("active");
-  c.classList.add("active");
-  if (!input.value) {
-    getCurrentLocationWeather();
-  } else {
-    toggleUnits();
-  }
-});
+};
+f.addEventListener("click", () => handleUnitChange(f, c));
+c.addEventListener("click", () => handleUnitChange(c, f));
